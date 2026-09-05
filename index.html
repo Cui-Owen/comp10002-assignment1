@@ -1,0 +1,289 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>COMP10002 Assignment 1 Reference Solution &amp; C Implementation</title>
+<meta name="description" content="COMP10002 Assignment 1 original requirements, explained C implementation, worked scores, complete reference solution, and visible-test downloads.">
+<meta name="robots" content="noindex,nofollow,noarchive,nosnippet">
+<script>
+window.MathJax={tex:{inlineMath:[['\\(','\\)']],displayMath:[['\\[','\\]']]},options:{skipHtmlTags:['script','noscript','style','textarea','pre','code']}};
+</script>
+<script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+<style>
+:root{--bg:#f7f7f2;--surface:#fff;--surface2:#f0f5f3;--text:#18212a;--muted:#5c6873;--border:#dce4df;--accent:#0f766e;--blue:#1d4ed8;--soft:#dff5f1;--warn:#b45309;--warnsoft:#fff3d6;--code:#111827;--codeText:#f8fafc;--shadow:0 1px 3px rgba(15,23,42,.08)}
+[data-theme="dark"]{--bg:#111418;--surface:#1b2027;--surface2:#222a33;--text:#edf2f7;--muted:#b5bec8;--border:#313b46;--accent:#5eead4;--blue:#93c5fd;--soft:#113b39;--warn:#fbbf24;--warnsoft:#3f3014;--code:#090d14;--codeText:#f8fafc;--shadow:0 1px 3px rgba(0,0,0,.35)}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--bg);color:var(--text);font:15px/1.72 -apple-system,BlinkMacSystemFont,"PingFang SC","Noto Sans CJK SC","Microsoft YaHei",sans-serif}button,a{font:inherit}a:focus-visible,button:focus-visible{outline:3px solid var(--blue);outline-offset:2px}code,pre{font-family:"SFMono-Regular",Consolas,Menlo,monospace}
+header{background:var(--surface);border-bottom:1px solid var(--border)}.head{max-width:1240px;margin:auto;padding:24px 24px 0}.brand{display:flex;gap:15px;align-items:center}.logo{width:48px;height:48px;border-radius:9px;display:grid;place-items:center;background:var(--accent);color:#fff;font-weight:900}.brand h1{font-size:22px;line-height:1.2;margin:0}.brand p{margin:4px 0 0;color:var(--muted);font-size:13px}.theme{margin-left:auto;width:40px;height:40px;border:1px solid var(--border);border-radius:50%;background:var(--surface);color:var(--text);cursor:pointer}.tabs{display:flex;gap:3px;margin-top:21px;overflow:auto}.tab{border:0;border-bottom:2px solid transparent;background:transparent;color:var(--muted);padding:11px 16px;cursor:pointer;white-space:nowrap;font-weight:750}.tab.active{color:var(--accent);border-bottom-color:var(--accent)}
+.toolbar{max-width:1240px;margin:auto;padding:16px 24px 0;display:flex;gap:9px;flex-wrap:wrap}.btn{display:inline-flex;align-items:center;justify-content:center;min-height:38px;padding:8px 13px;border:1px solid var(--border);border-radius:7px;background:var(--surface);color:var(--text);text-decoration:none;font-weight:750}.btn.primary{background:var(--accent);border-color:var(--accent);color:#fff}
+.view{display:none;max-width:1240px;margin:auto;padding:27px 24px 50px;grid-template-columns:240px minmax(0,1fr);gap:35px}.view.active{display:grid}.toc{position:sticky;top:20px;align-self:start;max-height:calc(100vh - 40px);overflow:auto}.toc strong{display:block;color:var(--muted);font-size:12px;letter-spacing:.08em;text-transform:uppercase;margin-bottom:8px}.toc a{display:block;padding:6px 9px;border-radius:5px;text-decoration:none;color:var(--muted);font-size:13px}.toc a:hover{background:var(--soft);color:var(--accent)}main{min-width:0}.card{background:var(--surface);border:1px solid var(--border);box-shadow:var(--shadow);border-radius:9px;padding:24px 28px;margin-bottom:18px}.qhead{display:flex;gap:12px;align-items:flex-start;border-bottom:1px solid var(--border);padding-bottom:14px;margin-bottom:17px}.qtag{flex:none;padding:4px 9px;border-radius:5px;background:var(--accent);color:#fff;font-size:12px;font-weight:850}.qhead h2{font-size:20px;line-height:1.3;margin:0}.qhead p{margin:4px 0 0;color:var(--muted);font-size:13px}.marks{margin-left:auto;white-space:nowrap;color:var(--muted);font-size:12px;background:var(--surface2);border:1px solid var(--border);border-radius:5px;padding:3px 8px}h3{font-size:16px;margin:20px 0 8px}p{margin:8px 0 12px}table{width:100%;border-collapse:collapse;margin:12px 0 16px;display:block;overflow:auto}th,td{border:1px solid var(--border);padding:8px 10px;text-align:left;vertical-align:top}th{background:var(--soft);color:var(--accent)}.question{border-left:4px solid var(--blue);background:var(--surface2);padding:12px 15px;margin:0 0 18px;border-radius:0 7px 7px 0}.question strong{display:block;color:var(--blue);margin-bottom:5px}.question p{margin:5px 0}.question ul{margin:7px 0 3px;padding-left:22px}.question li{margin:4px 0}.source-line{color:var(--muted);font-size:13px;font-style:italic}.answer{border-left:4px solid var(--warn);background:var(--warnsoft);padding:10px 14px;margin:12px 0;border-radius:0 7px 7px 0;font-weight:750}.formula{background:var(--surface2);border-left:4px solid var(--blue);padding:11px 14px;margin:12px 0;border-radius:0 7px 7px 0;overflow:auto;text-align:center;font-size:1.03rem}.codebox{margin:12px 0;background:var(--code);color:var(--codeText);padding:18px;border-radius:9px;line-height:1.58;font-size:13px;white-space:pre;overflow:auto}.codeframe{width:100%;height:72vh;border:0;border-radius:9px;background:var(--code)}.codebar{display:flex;justify-content:space-between;gap:12px;align-items:center;margin-bottom:12px}.codebar h2{margin:0;font-size:20px}.copy{border:1px solid var(--border);border-radius:6px;background:var(--surface2);color:var(--text);padding:6px 10px;cursor:pointer}.downloads{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:13px}.download{border:1px solid var(--border);background:var(--surface2);border-radius:8px;padding:15px}.download strong{display:block}.download p{color:var(--muted);font-size:13px}.download a{color:var(--accent);font-weight:800;text-decoration:none}.checklist li{margin:7px 0}footer{border-top:1px solid var(--border);background:var(--surface);color:var(--muted);padding:26px 24px}footer div{max-width:1240px;margin:auto;font-size:13px}
+.pipeline{display:grid;grid-template-columns:minmax(125px,1fr) auto minmax(125px,1fr) auto minmax(125px,1fr) auto minmax(125px,1fr);align-items:center;gap:8px;margin:18px 0 4px}.pipe-step{grid-column:span 1;min-height:108px;border:1px solid var(--border);border-top:4px solid var(--accent);background:var(--surface2);border-radius:8px;padding:12px;text-align:center;display:flex;flex-direction:column;justify-content:center}.pipe-step b{font-size:14px}.pipe-step span{color:var(--muted);font-size:12px;line-height:1.45;margin-top:4px}.pipe-arrow{text-align:center;color:var(--accent);font-size:22px;font-weight:900}.legendbar{display:flex;gap:16px;flex-wrap:wrap;border-top:1px solid var(--border);margin-top:17px;padding-top:13px;color:var(--muted);font-size:12px}.legend-item{display:flex;align-items:center;gap:6px}.legend-dot{display:inline-block;flex:none;width:9px;height:9px;border-radius:50%}.legend-dot.question-dot{background:var(--blue)}.legend-dot.code-dot{background:var(--accent)}.legend-dot.result-dot{background:var(--warn)}.impl{border:1px solid var(--border);border-radius:9px;overflow:hidden;margin:16px 0 20px}.impl-title{display:flex;align-items:center;gap:10px;background:var(--soft);padding:11px 15px;border-bottom:1px solid var(--border)}.impl-title b{color:var(--accent)}.impl-title span{color:var(--muted);font-size:13px}.impl-body{padding:15px}.code-label{display:flex;justify-content:space-between;gap:10px;align-items:center;margin:0 0 7px}.code-label strong{font-size:14px}.code-label code{font-size:12px;color:var(--muted)}.impl .codebox{margin:0}.why-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-top:12px}.why-grid+.code-label{margin-top:22px}.why{position:relative;border:1px solid var(--border);background:var(--surface2);border-radius:7px;padding:12px 12px 12px 45px;min-height:76px}.why-num{position:absolute;left:12px;top:12px;width:24px;height:24px;border-radius:50%;display:grid;place-items:center;background:var(--accent);color:#fff;font-size:12px;font-weight:900}.why b{display:block;font-size:13px}.why p{color:var(--muted);font-size:12px;line-height:1.5;margin:3px 0 0}.memory{display:flex;gap:3px;align-items:stretch;margin:12px 0 5px;overflow:auto}.mem-cell{flex:1;min-width:42px;border:1px solid var(--border);background:var(--surface2);text-align:center;border-radius:5px;padding:9px 5px;font-family:monospace}.mem-cell.end{background:var(--warnsoft);border-color:var(--warn)}.memory-note{font-size:12px;color:var(--muted);margin-top:4px}.call-flow{display:flex;align-items:stretch;gap:7px;margin:13px 0;overflow:auto}.flow-node{min-width:135px;flex:1;border:1px solid var(--border);border-radius:7px;padding:11px;background:var(--surface2);text-align:center}.flow-node b{display:block;color:var(--accent);font-size:13px}.flow-node span{display:block;color:var(--muted);font-size:12px;line-height:1.45;margin-top:3px}.flow-arrow{align-self:center;color:var(--accent);font-size:20px;font-weight:900}.compare-logic{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:10px;margin:12px 0}.logic-box{border:1px solid var(--border);background:var(--surface2);border-radius:7px;padding:12px;text-align:center}.logic-box b{display:block}.logic-box span{display:block;color:var(--muted);font-size:12px;margin-top:3px}.logic-else{color:var(--accent);font-weight:850;text-align:center}.result-title{display:flex;align-items:center;gap:8px;margin:22px 0 8px}.result-title h3{margin:0}.result-title:before{content:"";width:8px;height:8px;border-radius:50%;background:var(--warn)}
+@media(max-width:760px){.head{padding:18px 16px 0}.tabs{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:7px;padding-bottom:13px}.tab{border:1px solid var(--border);border-radius:6px;padding:9px 5px;background:var(--surface2)}.tab.active{background:var(--soft);border-color:var(--accent)}.toolbar{padding:13px 16px 0;display:grid}.view,.view.active{display:none;padding:18px 16px 40px}.view.active{display:block}.toc{position:static;max-height:none;margin-bottom:16px;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:5px}.toc strong{grid-column:1/-1}.toc a{background:var(--surface2)}.card{padding:18px}.qhead{display:block}.marks{display:inline-block;margin:9px 0 0}.downloads{grid-template-columns:1fr}.btn{width:100%}.codeframe{height:64vh}}
+@media(max-width:980px){.pipeline{grid-template-columns:1fr}.pipe-step{min-height:auto}.pipe-arrow{transform:rotate(90deg)}.why-grid{grid-template-columns:1fr}}
+@media(max-width:760px){.call-flow{display:grid;grid-template-columns:1fr}.flow-arrow{transform:rotate(90deg);text-align:center}.compare-logic{grid-template-columns:1fr}.logic-else{padding:2px}.impl-body{padding:12px}.memory{flex-wrap:wrap}.mem-cell{flex:0 0 42px}}
+</style>
+</head>
+<body>
+<header><div class="head"><div class="brand"><div class="logo">A1</div><div><h1>COMP10002 Assignment 1 Reference Solution</h1><p>Original Task · Key C Implementation · Why It Works · Verified Output</p></div><button class="theme" id="theme" aria-label="切换亮暗模式" title="切换亮暗模式">◐</button></div><div class="tabs" role="tablist"><button class="tab active" data-view="answers" role="tab" aria-selected="true">参考答案</button><button class="tab" data-view="code" role="tab" aria-selected="false">完整 C 代码</button><button class="tab" data-view="downloads" role="tab" aria-selected="false">下载材料</button></div></div></header>
+<div class="toolbar"><a class="btn primary" href="assets/ass1-reference-solution.c" download>下载 C 参考答案</a><a class="btn" href="assets/test1.txt" download>下载 test1.txt</a><a class="btn" href="assets/test1-out.txt" download>下载预期输出</a></div>
+
+<div class="view active" id="view-answers" role="tabpanel"><nav class="toc"><strong>Reference</strong><a href="#brief">原题总要求</a><a href="#stage1">Stage 1</a><a href="#stage2">Stage 2</a><a href="#worked">38 分计算</a><a href="#stage3">Stage 3</a><a href="#structure">程序结构</a><a href="#check">最终核对</a></nav><main>
+<section class="card" id="brief"><div class="qhead"><span class="qtag">ORIGINAL TASK</span><div><h2>原题是怎么问的</h2><p>作业总体任务与输入约定（已匿名化）。</p></div></div>
+<div class="question"><strong>原题总要求</strong><p class="source-line">“Write a program that reads text from stdin, generates a score for each input line relative to a multi-term query supplied on the command-line, and ... prints out a set of input lines that have the highest scores.”</p><ul><li>查询由命令行提供：<code>argv[1]</code> 到 <code>argv[argc-1]</code> 是多个查询词。</li><li>待搜索文本始终从 <code>stdin</code> 逐行读取；读到 EOF 后输出得分最高的行。</li><li>核心知识点是数组、字符串、函数和 <code>typedef</code>；不允许文件操作，也不建议使用 <code>malloc()</code>。</li><li>可以使用直接的实现方法及 <code>string.h</code> 中合适的函数，无需实现复杂模式搜索算法。</li></ul></div>
+<h3>整体数据流</h3>
+<div class="pipeline" aria-label="程序数据流"><div class="pipe-step"><b>命令行</b><span>argv[1..argc-1]<br>fully, fun</span></div><div class="pipe-arrow">→</div><div class="pipe-step"><b>Stage 1</b><span>读入并保存<br>lines[i]</span></div><div class="pipe-arrow">→</div><div class="pipe-step"><b>Stage 2</b><span>逐位置匹配<br>scores[i]</span></div><div class="pipe-arrow">→</div><div class="pipe-step"><b>Stage 3</b><span>排序行号<br>order[0..4]</span></div></div>
+<div class="legendbar" aria-label="内容颜色图例"><span class="legend-item"><i class="legend-dot question-dot"></i>蓝色：原题要求</span><span class="legend-item"><i class="legend-dot code-dot"></i>绿色：核心实现</span><span class="legend-item"><i class="legend-dot result-dot"></i>橙色：参考结果</span></div>
+</section>
+<section class="card" id="stage1"><div class="qhead"><span class="qtag">STAGE 1</span><div><h2>将输入保存到二维字符数组</h2><p>test1 的完整参考结果与实现要点。</p></div><span class="marks">up to 12/20</span></div>
+<div class="question"><strong>Stage 1 原题要求</strong><p class="source-line">“Modify the skeleton program so that the input text is read into an array.”</p><ul><li>最多 <code>MAX_LINES = 999</code> 行，每行最多 <code>MAX_CHARS = 80</code> 个字符；超出限制的输入可以静默丢弃。</li><li>输出平均行长，然后输出第一行、最后一行以及它们各自的长度。</li><li>行号从 <code>0</code> 开始。</li></ul></div>
+<div class="impl" id="stage1-code"><div class="impl-title"><b>核心实现</b><span>一次读一行，再把每行放入二维数组</span></div><div class="impl-body">
+<div class="code-label"><strong>1. 读取一行</strong><code>read_one_line()</code></div>
+<pre class="codebox"><code>int read_one_line(line_t line, int max) {
+    int len = 0, c;
+
+    while ((c = getchar()) != EOF) {
+        if (c == '\n') {
+            line[len] = '\0';
+            return len;
+        }
+        if (len &lt; max) {
+            line[len++] = c;
+        }
+    }
+    if (len &gt; 0) {
+        line[len] = '\0';
+        return len;
+    }
+    return EOF;
+}</code></pre>
+<div class="why-grid"><div class="why"><span class="why-num">1</span><b>为什么一直调用 getchar？</b><p>即使已存满 80 个字符，也要继续消耗本行到 <code>\n</code>，否则剩余字符会被错当成下一行。</p></div><div class="why"><span class="why-num">2</span><b>为什么手动写 \0？</b><p>C 字符串必须以 <code>'\0'</code> 结束；没有它，<code>strlen</code> 和 <code>printf("%s")</code> 会越界读取。</p></div><div class="why"><span class="why-num">3</span><b>为什么 EOF 前的最后半行也要保留？</b><p>文件最后一行可能没有换行符。只要 <code>len &gt; 0</code>，它仍是一条有效输入行。</p></div><div class="why"><span class="why-num">4</span><b>为什么 line_t 需要 81 格？</b><p>80 格保存内容，第 81 格保存结束符。所以定义为 <code>MAX_CHARS + 1</code>。</p></div></div>
+<h3>一行在内存中的样子</h3><div class="memory" aria-label="C 字符串内存示意"><div class="mem-cell">f</div><div class="mem-cell">u</div><div class="mem-cell">n</div><div class="mem-cell">.</div><div class="mem-cell">…</div><div class="mem-cell">[79]</div><div class="mem-cell end">\0</div></div><p class="memory-note">前 80 格是可保存字符的空间；最后一格专门留给字符串结束符。</p>
+<div class="code-label"><strong>2. 读取所有行</strong><code>read_lines()</code></div>
+<pre class="codebox"><code>int read_lines(lines_t lines) {
+    int nlines = 0;
+    line_t discard;
+
+    while (nlines &lt; MAX_LINES &amp;&amp;
+            read_one_line(lines[nlines], MAX_CHARS) != EOF) {
+        nlines++;
+    }
+    while (read_one_line(discard, MAX_CHARS) != EOF) {
+        /* 超过 999 行的输入丢弃 */
+    }
+    return nlines;
+}</code></pre>
+<div class="why-grid"><div class="why"><span class="why-num">5</span><b>nlines 同时是数量和下一个空位</b><p>读入前 <code>lines[nlines]</code> 指向下一格；成功读入后再自增，不会出现 off-by-one。</p></div><div class="why"><span class="why-num">6</span><b>为什么还有第二个 while？</b><p>数组满后不再保存，但仍把 stdin 读到 EOF，完整实现“超出限制可丢弃”。</p></div></div>
+</div></div>
+<h3>数据类型</h3><pre class="codebox"><code>typedef char line_t[MAX_CHARS + 1];
+typedef line_t lines_t[MAX_LINES];
+typedef int score_array_t[MAX_LINES];
+typedef int index_array_t[MAX_LINES];</code></pre>
+<p><code>line_t</code> 使用 <code>MAX_CHARS + 1</code>，多出的一格用于字符串结束符 <code>\0</code>。实际保存的行数为 <code>nlines</code>，合法行号是 <code>0 ... nlines-1</code>。</p>
+<div class="result-title"><h3>test1 统计结果</h3></div><table><thead><tr><th>项目</th><th>结果</th></tr></thead><tbody><tr><td>输入行数</td><td>9</td></tr><tr><td>平均长度</td><td>51.44 characters</td></tr><tr><td>第一行</td><td>line 0，长度 41</td></tr><tr><td>最后一行</td><td>line 8，长度 41</td></tr></tbody></table>
+<pre class="codebox"><code>Stage 1
+-------
+average line = 51.44 characters
+line   0:
+-> Programming is fun and functions are fun.
+-> length =  41
+line   8:
+-> Functions are often full of useful funny!
+-> length =  41</code></pre>
+<h3>平均值怎么实现</h3><div class="formula">\[\mathrm{average}=\frac{\sum_{i=0}^{nlines-1}\mathrm{strlen}(lines[i])}{nlines}\]</div>
+<pre class="codebox"><code>double average_length(lines_t lines, int nlines) {
+    int total = 0;
+    for (int i = 0; i &lt; nlines; i++) {
+        total += (int)strlen(lines[i]);
+    }
+    if (nlines == 0) {
+        return 0.0;
+    }
+    return (double)total / nlines;
+}</code></pre>
+<div class="why-grid"><div class="why"><span class="why-num">7</span><b>为什么先检查 nlines == 0？</b><p>空输入时不能除以 0；直接返回 <code>0.0</code> 让函数始终有定义。</p></div><div class="why"><span class="why-num">8</span><b>为什么把 total 转成 double？</b><p>若两边都是 <code>int</code>，C 会先做整数除法，<code>51.44</code> 会被截断成 <code>51</code>。</p></div></div>
+<div class="answer">关键边界：第一行是 <code>lines[0]</code>，最后一行是 <code>lines[nlines - 1]</code>；空输入时不能访问两者。</div></section>
+
+<section class="card" id="stage2"><div class="qhead"><span class="qtag">STAGE 2</span><div><h2>对每一行计算 prefix-match score</h2><p>terms 为 fully 和 fun。</p></div><span class="marks">up to 16/20</span></div>
+<div class="question"><strong>Stage 2 原题要求</strong><p class="source-line">“Calculate a score for each input line in connection with the query provided on the commandline.”</p><ul><li>依次把行内每个字符位置当作匹配起点，计算它与所有查询词的最长连续前缀匹配长度 ℓ<sub>i</sub>。</li><li>匹配不区分大小写；每个字符位置都是每个 term 的潜在起点。</li><li>按原题公式累加整行得分，并在 Stage 2 输出第一行和最后一行的分数。</li></ul></div>
+<h3>从字符到整行分数：四层函数</h3>
+<div class="call-flow" aria-label="Stage 2 函数调用链"><div class="flow-node"><b>prefix_match</b><span>1 个起点<br>× 1 个 term</span></div><div class="flow-arrow">→</div><div class="flow-node"><b>position_match</b><span>1 个起点<br>取所有 term 最大值</span></div><div class="flow-arrow">→</div><div class="flow-node"><b>match_points</b><span>匹配长度<br>变成该位置分数</span></div><div class="flow-arrow">→</div><div class="flow-node"><b>line_score</b><span>遍历所有起点<br>累加整行</span></div></div>
+<div class="impl" id="stage2-code"><div class="impl-title"><b>核心实现</b><span>小函数各做一件事，与数学定义逐层对应</span></div><div class="impl-body">
+<div class="code-label"><strong>1. 单个 term 的连续前缀匹配</strong><code>prefix_match()</code></div>
+<pre class="codebox"><code>int prefix_match(const char *text, const char *term) {
+    int len = 0;
+
+    while (text[len] != '\0' &amp;&amp; term[len] != '\0' &amp;&amp;
+            tolower((unsigned char)text[len]) ==
+            tolower((unsigned char)term[len])) {
+        len++;
+    }
+    return len;
+}</code></pre>
+<div class="why-grid"><div class="why"><span class="why-num">1</span><b>为什么在第一个不匹配处停止？</b><p>题目要的是 prefix：必须从起点连续向后相同。中间一旦断开，后面再相同也不属于前缀。</p></div><div class="why"><span class="why-num">2</span><b>为什么两边都 tolower？</b><p>实现 case-insensitive matching。先转成 <code>unsigned char</code>，再传给 <code>tolower</code>，符合 C 标准的参数要求。</p></div></div>
+<div class="code-label"><strong>2. 同一起点对所有 terms 取最大值</strong><code>position_match()</code></div>
+<pre class="codebox"><code>int position_match(const char *text, int argc, char *argv[]) {
+    int best = 0;
+
+    for (int argnum = 1; argnum &lt; argc; argnum++) {
+        int len = prefix_match(text, argv[argnum]);
+        if (len &gt; best) {
+            best = len;
+        }
+    }
+    return best;
+}</code></pre>
+<div class="why-grid"><div class="why"><span class="why-num">3</span><b>为什么 argnum 从 1 开始？</b><p><code>argv[0]</code> 是程序名，真正的查询词从 <code>argv[1]</code> 开始。</p></div><div class="why"><span class="why-num">4</span><b>为什么取 max，不是相加？</b><p>原题把 ℓ<sub>i</sub> 定义为该起点对所有 terms 的“最长”匹配。同一位置只能产生一次贡献。</p></div></div>
+<div class="code-label"><strong>3. 把匹配长度转成分数</strong><code>match_points()</code></div>
+<pre class="codebox"><code>int match_points(int match_len) {
+    if (match_len &gt; MAX_MATCH) {
+        match_len = MAX_MATCH;
+    }
+    return (1 &lt;&lt; match_len) - 1;
+}</code></pre>
+<div class="why-grid"><div class="why"><span class="why-num">5</span><b>为什么先封顶到 10？</b><p>这正是公式中的 <code>min(ℓᵢ, 10)</code>；匹配再长，单位置最多也只得 1023 分。</p></div><div class="why"><span class="why-num">6</span><b>为什么用 1 &lt;&lt; n？</b><p>左移 n 位等于 (2^n)。C 中的 <code>^</code> 是按位 XOR，不是乘方。</p></div></div>
+<div class="code-label"><strong>4. 遍历整行每个起点</strong><code>line_score()</code></div>
+<pre class="codebox"><code>int line_score(const char *line, int argc, char *argv[]) {
+    int score = 0;
+
+    for (int i = 0; line[i] != '\0'; i++) {
+        int match_len = position_match(line + i, argc, argv);
+        score += match_points(match_len);
+    }
+    return score;
+}</code></pre>
+<div class="why-grid"><div class="why"><span class="why-num">7</span><b>line + i 是什么？</b><p>它是指向第 i 个字符的指针，因此每次都能把不同位置当作一个新的字符串起点。</p></div><div class="why"><span class="why-num">8</span><b>为什么遍历到 \0 为止？</b><p>只检查真实字符，不读取数组中未使用的空间，也不把结束符当成匹配起点。</p></div></div>
+</div></div>
+<h3>定义</h3><p>对一行中的每个字符位置 \(i\)，分别计算从该位置开始与所有 terms 的大小写不敏感前缀匹配长度，并取最大值 \(\ell_i\)。同一位置只使用最大值，不把多个 term 的匹配长度相加。</p>
+<div class="formula">\[S=\sum_i\left(2^{\min(\ell_i,10)}-1\right)\]</div>
+<table><thead><tr><th>函数</th><th>返回值</th></tr></thead><tbody><tr><td><code>prefix_match(text, term)</code></td><td>一个起点与一个 term 的连续前缀长度</td></tr><tr><td><code>position_match(text, argc, argv)</code></td><td>该起点对所有 terms 的最大匹配长度</td></tr><tr><td><code>line_score(line, argc, argv)</code></td><td>该行所有起点贡献之和</td></tr></tbody></table>
+<div class="result-title"><h3>第一行得分 21</h3></div><p><code>Programming is fun and functions are fun.</code> 中有三个起点对 term <code>fun</code> 连续匹配 3 个字符：第一个 <code>fun</code>、<code>functions</code> 的开头、最后一个 <code>fun</code>。</p><div class="formula">\[(2^3-1)+(2^3-1)+(2^3-1)=7+7+7=21\]</div>
+<h3>最后一行得分 38</h3><pre class="codebox"><code>Stage 2
+-------
+line   0:
+-&gt; Programming is fun and functions are fun.
+-&gt; score =  21
+line   8:
+-&gt; Functions are often full of useful funny!
+-&gt; score =  38</code></pre></section>
+
+<section class="card" id="worked"><div class="qhead"><span class="qtag">WORKED</span><div><h2>最后一行的 38 分逐项核对</h2><p>Functions are often full of useful funny!</p></div></div>
+<table><thead><tr><th>候选起点</th><th>对 fully</th><th>对 fun</th><th>\(\ell_i\)</th><th>贡献</th></tr></thead><tbody><tr><td>Functions</td><td>2</td><td>3</td><td>3</td><td>7</td></tr><tr><td>often 中的 f</td><td>1</td><td>1</td><td>1</td><td>1</td></tr><tr><td>full</td><td>4</td><td>2</td><td>4</td><td>15</td></tr><tr><td>of 中的 f</td><td>1</td><td>1</td><td>1</td><td>1</td></tr><tr><td>useful 中的 f</td><td>3</td><td>2</td><td>3</td><td>7</td></tr><tr><td>funny</td><td>2</td><td>3</td><td>3</td><td>7</td></tr></tbody></table>
+<div class="formula">\[(2^3-1)+(2^1-1)+(2^4-1)+(2^1-1)+(2^3-1)+(2^3-1)=38\]</div>
+<p>所有其他位置的 \(\ell_i=0\)，贡献为 \(2^0-1=0\)。计分长度最多使用 10，因此单个位置最高贡献为 \(2^{10}-1=1023\)。C 中 <code>^</code> 不是乘方；参考实现使用 <code>(1 &lt;&lt; match_len) - 1</code>。</p></section>
+
+<section class="card" id="stage3"><div class="qhead"><span class="qtag">STAGE 3</span><div><h2>输出分数最高的五行</h2><p>分数降序；同分时原始行号升序。</p></div><span class="marks">up to 20/20</span></div>
+<div class="question"><strong>Stage 3 原题要求</strong><p class="source-line">“Present the TOP_SCORES best-scoring lines.”</p><ul><li>输出 <code>TOP_SCORES = 5</code> 条得分最高的输入行。</li><li>分数越高越先；如果两行同分，原始行号较小的先输出。</li><li>全部输出的最后必须以 <code>tadaa!</code> 结束。</li></ul></div>
+<h3>比较规则只有两层</h3><div class="compare-logic"><div class="logic-box"><b>第一层：比分数</b><span>score 高的先</span></div><div class="logic-else">如果同分 →</div><div class="logic-box"><b>第二层：比行号</b><span>line number 小的先</span></div></div>
+<div class="impl" id="stage3-code"><div class="impl-title"><b>核心实现</b><span>只排序 order 里的行号，不搬动文本和分数</span></div><div class="impl-body">
+<div class="code-label"><strong>1. 把两层排序规则写成一个函数</strong><code>comes_before()</code></div>
+<pre class="codebox"><code>int comes_before(int left, int right, score_array_t scores) {
+    if (scores[left] != scores[right]) {
+        return scores[left] &gt; scores[right];
+    }
+    return left &lt; right;
+}</code></pre>
+<div class="why-grid"><div class="why"><span class="why-num">1</span><b>为什么分数使用 &gt;？</b><p>题目要求降序，所以高分行应该出现在前面。</p></div><div class="why"><span class="why-num">2</span><b>为什么同分时使用 left &lt; right？</b><p><code>left</code> 和 <code>right</code> 就是原始行号。行号较小者优先，正好实现 tie-break。</p></div></div>
+<div class="code-label"><strong>2. 插入排序行号索引</strong><code>sort_indices()</code></div>
+<pre class="codebox"><code>void sort_indices(index_array_t order, score_array_t scores,
+        int nlines) {
+    for (int i = 0; i &lt; nlines; i++) {
+        order[i] = i;
+    }
+
+    for (int i = 1; i &lt; nlines; i++) {
+        int item = order[i];
+        int j = i;
+        while (j &gt; 0 &amp;&amp;
+                comes_before(item, order[j - 1], scores)) {
+            order[j] = order[j - 1];
+            j--;
+        }
+        order[j] = item;
+    }
+}</code></pre>
+<div class="why-grid"><div class="why"><span class="why-num">3</span><b>为什么排 order，不排 lines？</b><p><code>order = [8,5,0,1,2,...]</code> 只是一组行号。排它不会破坏 <code>lines[i]</code> 与 <code>scores[i]</code> 的对应关系。</p></div><div class="why"><span class="why-num">4</span><b>为什么插入排序就足够？</b><p>最多只有 999 行，题目明确允许 straightforward techniques。这个实现短、好验证、无需额外库。</p></div></div>
+<div class="code-label"><strong>3. 只输出前五个索引</strong><code>print_stage_three()</code></div>
+<pre class="codebox"><code>int nshow = nlines &lt; TOP_SCORES ? nlines : TOP_SCORES;
+
+for (int rank = 0; rank &lt; nshow; rank++) {
+    print_line_score(lines, scores, order[rank]);
+}</code></pre>
+<div class="why-grid"><div class="why"><span class="why-num">5</span><b>为什么用 min(nlines, 5)？</b><p>如果输入只有 3 行，就只输出 3 行；避免访问不存在的 <code>order[3]</code> 和 <code>order[4]</code>。</p></div><div class="why"><span class="why-num">6</span><b>rank 与行号为什么不同？</b><p><code>rank</code> 是排名位置；<code>order[rank]</code> 才是原始行号。输出文本和分数都要用后者索引。</p></div></div>
+</div></div>
+<div class="result-title"><h3>test1 最终参考结果</h3></div>
+<table><thead><tr><th>Rank</th><th>Line</th><th>Score</th><th>Text</th></tr></thead><tbody><tr><td>1</td><td>8</td><td>38</td><td>Functions are often full of useful funny!</td></tr><tr><td>2</td><td>5</td><td>32</td><td>We should probably protest forcefully when that happens.</td></tr><tr><td>3</td><td>0</td><td>21</td><td>Programming is fun and functions are fun.</td></tr><tr><td>4</td><td>1</td><td>9</td><td>A function can also offer a reception or an event or a protocol.</td></tr><tr><td>5</td><td>2</td><td>9</td><td>When funny things are provided we are supposed laugh our heads off.</td></tr></tbody></table>
+<div class="answer">行 1 和行 2 同为 9 分，行号 1 较小，所以 line 1 必须先输出。</div>
+<h3>索引排序</h3><p>建立 <code>order[i] = i</code>，只排序行号。比较函数先比较 <code>scores[left]</code> 与 <code>scores[right]</code>；分数相同时比较 <code>left &lt; right</code>。这样不需要搬动字符串，<code>lines[i]</code> 与 <code>scores[i]</code> 的对应关系不会改变。</p>
+<pre class="codebox"><code>Stage 3
+-------
+line   8:
+-&gt; Functions are often full of useful funny!
+-&gt; score =  38
+line   5:
+-&gt; We should probably protest forcefully when that happens.
+-&gt; score =  32
+line   0:
+-&gt; Programming is fun and functions are fun.
+-&gt; score =  21
+line   1:
+-&gt; A function can also offer a reception or an event or a protocol.
+-&gt; score =   9
+line   2:
+-&gt; When funny things are provided we are supposed laugh our heads off.
+-&gt; score =   9
+
+tadaa!</code></pre></section>
+
+<section class="card" id="structure"><div class="qhead"><span class="qtag">DESIGN</span><div><h2>参考程序的函数分解</h2><p>main 只负责阶段顺序。</p></div></div>
+<pre class="codebox"><code>int main(int argc, char *argv[]) {
+    lines_t lines;
+    score_array_t scores;
+    index_array_t order;
+
+    int nlines = read_lines(lines);             /* Stage 1 数据 */
+    print_stage(1);
+    print_stage_one(lines, nlines);
+
+    score_all_lines(lines, scores, nlines,      /* Stage 2 数据 */
+            argc, argv);
+    print_stage(2);
+    print_stage_two(lines, scores, nlines);
+
+    sort_indices(order, scores, nlines);        /* Stage 3 数据 */
+    print_stage(3);
+    print_stage_three(lines, scores, order, nlines);
+    tadaa();
+    return 0;
+}</code></pre>
+<div class="answer"><code>main</code> 展示的是整体答案顺序：先得到 <code>lines</code>，再由它计算 <code>scores</code>，最后由分数生成 <code>order</code>。每个阶段只依赖前一阶段已准备好的数据。</div>
+<table><thead><tr><th>模块</th><th>函数</th><th>职责</th></tr></thead><tbody><tr><td>Input</td><td><code>read_one_line</code>、<code>read_lines</code></td><td>截断单行、保存最多 999 行、消费多余输入</td></tr><tr><td>Stage 1</td><td><code>average_length</code>、<code>print_line_length</code></td><td>统计平均长度并按精确格式输出</td></tr><tr><td>Stage 2</td><td><code>prefix_match</code>、<code>position_match</code>、<code>match_points</code>、<code>line_score</code></td><td>从局部连续匹配构造整行分数</td></tr><tr><td>Stage 3</td><td><code>comes_before</code>、<code>sort_indices</code></td><td>按两层比较键排列行号</td></tr><tr><td>Output</td><td><code>print_stage_one/two/three</code></td><td>集中控制每个阶段的输出格式</td></tr></tbody></table></section>
+
+<section class="card" id="check"><div class="qhead"><span class="qtag">CHECK</span><div><h2>编译与结果核对</h2><p>参考代码已用 test1 做完整逐字符验证。</p></div></div>
+<pre class="codebox"><code>gcc -Wall -Wextra -std=c11 \
+    -o ass1-reference ass1-reference-solution.c
+
+./ass1-reference fully fun &lt; test1.txt &gt; actual.txt
+diff -u test1-out.txt actual.txt</code></pre>
+<ul class="checklist"><li>编译无 warning。</li><li><code>diff</code> 无输出，表示文字、数字、空格和换行完全一致。</li><li><code>DEBUG</code> 设置为 0。</li><li>最终个人提交仍需按实际情况完成官方 skeleton 中的声明。</li></ul></section>
+</main></div>
+
+<div class="view" id="view-code" role="tabpanel"><nav class="toc"><strong>C Source</strong><a href="#full-code">完整参考程序</a><a href="assets/ass1-reference-solution.c" download>下载 .c</a></nav><main>
+<section class="card" id="full-code"><div class="codebar"><div><h2>完整可编译 C 参考答案</h2><p>已通过 test1 的完整 expected-output 比较。</p></div><a class="btn primary" href="assets/ass1-reference-solution.c" download>下载 C 文件</a></div>
+<iframe class="codeframe" src="assets/ass1-reference-solution.c" title="Complete C reference solution"></iframe>
+</section></main></div>
+
+<div class="view" id="view-downloads" role="tabpanel"><nav class="toc"><strong>Downloads</strong><a href="#materials">全部材料</a></nav><main>
+<section class="card" id="materials"><div class="qhead"><span class="qtag">FILES</span><div><h2>参考答案与测试材料</h2><p>代码、可见测试输入与精确预期输出。</p></div></div><div class="downloads">
+<div class="download"><strong>C reference solution</strong><p>完整可编译参考实现，已用 test1 验证。</p><a href="assets/ass1-reference-solution.c" download>下载 .c</a></div>
+<div class="download"><strong>Visible test input</strong><p>配合查询词 fully fun 运行。</p><a href="assets/test1.txt" download>下载 test1.txt</a></div>
+<div class="download"><strong>Expected output</strong><p>用于逐字符 diff。</p><a href="assets/test1-out.txt" download>下载 test1-out.txt</a></div>
+<div class="download"><strong>Anonymous assignment summary</strong><p>Stage 1–3 技术要求摘要。</p><a href="assets/assignment-guide.md" download>下载 Markdown</a></div>
+</div></section></main></div>
+
+<footer><div>COMP10002 Assignment 1 reference solution · Personal names, email addresses, and student identifiers removed.</div></footer>
+<script>
+const root=document.documentElement;const saved=localStorage.getItem('a1-theme');if(saved)root.dataset.theme=saved;document.getElementById('theme').addEventListener('click',()=>{root.dataset.theme=root.dataset.theme==='dark'?'light':'dark';localStorage.setItem('a1-theme',root.dataset.theme)});
+const tabs=[...document.querySelectorAll('.tab')];const views=[...document.querySelectorAll('.view')];function activate(tab){tabs.forEach(t=>{const on=t===tab;t.classList.toggle('active',on);t.setAttribute('aria-selected',String(on))});views.forEach(v=>v.classList.toggle('active',v.id==='view-'+tab.dataset.view));history.replaceState(null,'','#'+tab.dataset.view)}tabs.forEach(t=>t.addEventListener('click',()=>activate(t)));const requested=location.hash.slice(1);const target=tabs.find(t=>t.dataset.view===requested);if(target)activate(target);
+</script>
+</body>
+</html>
