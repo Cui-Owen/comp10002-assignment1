@@ -1,0 +1,39 @@
+
+Stage 1
+-------
+average line = 51.44 characters
+line   0:
+-> Programming is fun and functions are fun.
+-> length =  41
+line   8:
+-> Functions are often full of useful funny!
+-> length =  41
+
+Stage 2
+-------
+line   0:
+-> Programming is fun and functions are fun.
+-> score =  21
+line   8:
+-> Functions are often full of useful funny!
+-> score =  38
+
+Stage 3
+-------
+line   8:
+-> Functions are often full of useful funny!
+-> score =  38
+line   5:
+-> We should probably protest forcefully when that happens.
+-> score =  32
+line   0:
+-> Programming is fun and functions are fun.
+-> score =  21
+line   1:
+-> A function can also offer a reception or an event or a protocol.
+-> score =   9
+line   2:
+-> When funny things are provided we are supposed laugh our heads off.
+-> score =   9
+
+tadaa!
